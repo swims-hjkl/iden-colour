@@ -1,0 +1,1 @@
+PNG specification - https://www.w3.org/TR/png-3/#5PNG-file-signature 
