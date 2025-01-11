@@ -1,6 +1,6 @@
-package main
+package utils
 
-func bytesEqual(a []byte, b []byte) bool{
+func BytesEqual(a []byte, b []byte) bool{
 	if len(a) != len(b) {
 		return false
 	}

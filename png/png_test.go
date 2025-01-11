@@ -1,28 +1,15 @@
 package png
 
+
 import (
 	"testing"
+	"github.com/swims-hjkl/iden-colour/utils"
 )
 
 
-func bytesEqual(a []byte,b []byte) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for index := 0; index < len(a); index++ {
-		if a[index] != b[index] {
-			return false
-		}
-	}
-	return true
-}
-
-
-func testingFuncion(t *testing.T) {
-}
-
 
 func TestNewPNG(t *testing.T) {
+	var headerBytes = []byte{0X89, 0X50, 0X4E, 0X47, 0X0D, 0X0A, 0X1A, 0x0A}
 	testCases := []struct {
 		testName string
 		bytesContent []byte
@@ -30,6 +17,13 @@ func TestNewPNG(t *testing.T) {
 		valExpected *PNG
 		errExpected string
 	}{
+		{
+			"Test for success",
+			headerBytes, 
+			"something.name",
+			&PNG{bytesContent: headerBytes, fileName: "something.name"},
+			"",
+		},
 		{       
 			"Test for nil bytes",
 			nil,
@@ -46,11 +40,11 @@ func TestNewPNG(t *testing.T) {
 			"fileName cannot be empty",
 		},
 		{
-			"Test for success",
-			[]byte{1, 2, 3}, 
+			"Test for lesser number of bytes than header",
+			[]uint8{1, 2, 3}, 
 			"something.name",
-			&PNG{bytesContent: []byte{1, 2, 3}, fileName: "something.name"},
-			"",
+			nil,
+			"png header is not valid",
 		},
 	}
 
@@ -78,7 +72,7 @@ func TestNewPNG(t *testing.T) {
 				if gotPng.fileName != testCase.valExpected.fileName {
 					t.Errorf("filenames do not match, expected %s got %s", testCase.valExpected.fileName, gotPng.fileName)
 				}
-				if !bytesEqual(gotPng.bytesContent,testCase.valExpected.bytesContent) {
+				if !utils.BytesEqual(gotPng.bytesContent,testCase.valExpected.bytesContent) {
 					t.Errorf("png bytesContent do not match, expected %v got %v", testCase.valExpected.bytesContent, gotPng.bytesContent)
 				}
 			}

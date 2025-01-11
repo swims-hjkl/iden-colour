@@ -1,6 +1,0 @@
-package png
-
-
-func main(){
-
-}
